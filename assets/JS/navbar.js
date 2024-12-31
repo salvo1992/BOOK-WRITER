@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Home", link: "index.html" },
         { name: "Libri", link: "books.html" },
         { name: "Struttura Libro", link: "outline.html" },
-        { name: "Scrittura", link: "write.html" },
+        { name: "Scrittura", link: "writer.html" },
         { name: "Note", link: "notes.html" }
     ];
 

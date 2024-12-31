@@ -57,7 +57,7 @@
             const currentBook = books[currentIndex];
 
             // Carica i capitoli nel selettore
-            currentBook.chapters.forEach((chapter, index) => {
+            (currentBook.chapters || []).forEach((chapter, index) => {
                 const option = document.createElement('option');
                 option.value = index;
                 option.textContent = chapter;
@@ -65,10 +65,12 @@
             });
 
             // Aggiorna l'area di testo con il contenuto del capitolo selezionato
-            chapterSelector.addEventListener('change', () => {
+            function loadContent() {
                 const selectedIndex = chapterSelector.value;
                 contentArea.value = currentBook.content?.[selectedIndex] || "";
-            });
+            }
+
+            chapterSelector.addEventListener('change', loadContent);
 
             // Salva il contenuto del capitolo
             document.getElementById('save-content').addEventListener('click', () => {
@@ -105,6 +107,9 @@
                     contentArea.value = currentBook.content[selectedIndex];
                 }
             });
+
+            // Carica il contenuto iniziale
+            loadContent();
         });
     </script>
 </body>

@@ -46,34 +46,51 @@
     </footer>
 
     <script>
-        document.getElementById('save-outline').addEventListener('click', () => {
-            const title = document.getElementById('book-title').value;
-            const introduction = document.getElementById('book-introduction').value;
-            const chapters = Array.from(document.querySelectorAll('#chapter-list li')).map(li => li.textContent);
+        document.addEventListener("DOMContentLoaded", () => {
+            const titleInput = document.getElementById('book-title');
+            const introductionInput = document.getElementById('book-introduction');
+            const chapterList = document.getElementById('chapter-list');
 
             const books = JSON.parse(localStorage.getItem("books")) || [];
             const currentIndex = parseInt(localStorage.getItem("currentBookIndex"), 10);
 
-            if (!title) {
-                alert("Il titolo non può essere vuoto.");
+            if (isNaN(currentIndex) || !books[currentIndex]) {
+                alert("Nessun libro selezionato. Ritorna alla pagina dei libri.");
+                window.location.href = 'books.html';
                 return;
             }
 
-            books[currentIndex] = { ...books[currentIndex], title, introduction, chapters };
-            localStorage.setItem("books", JSON.stringify(books));
+            const currentBook = books[currentIndex];
 
-            window.location.href = 'write.html';
-        });
-
-        document.getElementById('add-chapter').addEventListener('click', () => {
-            const chapterName = prompt("Nome del nuovo capitolo:");
-            if (chapterName) {
+            // Popola i dati iniziali
+            titleInput.value = currentBook.title || "";
+            introductionInput.value = currentBook.introduction || "";
+            (currentBook.chapters || []).forEach(chapter => {
                 const li = document.createElement('li');
-                li.textContent = chapterName;
-                document.getElementById('chapter-list').appendChild(li);
-            }
+                li.textContent = chapter;
+                chapterList.appendChild(li);
+            });
+
+            // Aggiungi un nuovo capitolo
+            document.getElementById('add-chapter').addEventListener('click', () => {
+                const chapterName = prompt("Nome del nuovo capitolo:");
+                if (chapterName) {
+                    const li = document.createElement('li');
+                    li.textContent = chapterName;
+                    chapterList.appendChild(li);
+                    currentBook.chapters = [...(currentBook.chapters || []), chapterName];
+                    localStorage.setItem("books", JSON.stringify(books));
+                }
+            });
+
+            // Salva i dati del libro
+            document.getElementById('save-outline').addEventListener('click', () => {
+                currentBook.title = titleInput.value;
+                currentBook.introduction = introductionInput.value;
+                localStorage.setItem("books", JSON.stringify(books));
+                window.location.href = 'writer.html';
+            });
         });
     </script>
 </body>
 </html>
-
