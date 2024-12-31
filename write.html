@@ -1,0 +1,111 @@
+<!-- Writer - Scrittura del Libro -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrittura del Libro - Il Vikingo del Web</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/navbar.js" defer></script>
+    <script src="assets/js/writer.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Scrittura del Libro</h1>
+    </header>
+
+    <main>
+        <!-- Selezione del Capitolo -->
+        <section class="container">
+            <h2>Seleziona Capitolo</h2>
+            <label for="chapter-selector">Capitolo:</label>
+            <select id="chapter-selector">
+                <!-- Capitoli caricati dinamicamente -->
+            </select>
+        </section>
+
+        <!-- Scrittura -->
+        <section class="container">
+            <h2>Scrivi il Testo</h2>
+            <textarea id="chapter-content" placeholder="Scrivi il contenuto del capitolo..."></textarea>
+        </section>
+
+        <!-- Controlli -->
+        <section class="action">
+            <button id="save-content" class="btn-primary">Salva</button>
+            <button id="next-page" class="btn-secondary">Pagina Successiva</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const chapterSelector = document.getElementById('chapter-selector');
+            const contentArea = document.getElementById('chapter-content');
+            const books = JSON.parse(localStorage.getItem("books")) || [];
+            const currentIndex = parseInt(localStorage.getItem("currentBookIndex"), 10);
+
+            if (isNaN(currentIndex) || !books[currentIndex]) {
+                alert("Nessun libro selezionato. Ritorna alla pagina iniziale.");
+                window.location.href = 'books.html';
+                return;
+            }
+
+            const currentBook = books[currentIndex];
+
+            // Carica i capitoli nel selettore
+            currentBook.chapters.forEach((chapter, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = chapter;
+                chapterSelector.appendChild(option);
+            });
+
+            // Aggiorna l'area di testo con il contenuto del capitolo selezionato
+            chapterSelector.addEventListener('change', () => {
+                const selectedIndex = chapterSelector.value;
+                contentArea.value = currentBook.content?.[selectedIndex] || "";
+            });
+
+            // Salva il contenuto del capitolo
+            document.getElementById('save-content').addEventListener('click', () => {
+                const selectedIndex = chapterSelector.value;
+                if (!selectedIndex) {
+                    alert("Seleziona un capitolo per salvare il contenuto.");
+                    return;
+                }
+
+                if (!currentBook.content) currentBook.content = {};
+                currentBook.content[selectedIndex] = contentArea.value;
+                books[currentIndex] = currentBook;
+                localStorage.setItem("books", JSON.stringify(books));
+
+                alert("Contenuto salvato con successo!");
+            });
+
+            // Gestione del passaggio alla pagina successiva
+            document.getElementById('next-page').addEventListener('click', () => {
+                const selectedIndex = chapterSelector.value;
+                if (!selectedIndex) {
+                    alert("Seleziona un capitolo per continuare.");
+                    return;
+                }
+
+                const nextPageContent = prompt("Scrivi il contenuto della nuova pagina:");
+                if (nextPageContent) {
+                    if (!currentBook.content) currentBook.content = {};
+                    currentBook.content[selectedIndex] += `\n\n${nextPageContent}`;
+                    books[currentIndex] = currentBook;
+                    localStorage.setItem("books", JSON.stringify(books));
+
+                    alert("Pagina aggiunta con successo!");
+                    contentArea.value = currentBook.content[selectedIndex];
+                }
+            });
+        });
+    </script>
+</body>
+</html>

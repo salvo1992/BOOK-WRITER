@@ -1,0 +1,87 @@
+<!-- Notes - Gestione delle Note -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note - Il Vikingo del Web</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/navbar.js" defer></script>
+    <script src="assets/js/notes.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Gestione delle Note</h1>
+    </header>
+
+    <main>
+        <!-- Creazione della Nota -->
+        <section class="container">
+            <h2>Crea una Nuova Nota</h2>
+            <textarea id="note-content" placeholder="Scrivi la tua nota..."></textarea>
+            <button id="save-note" class="btn-primary">Salva Nota</button>
+        </section>
+
+        <!-- Lista delle Note -->
+        <section class="container">
+            <h2>Note Salvate</h2>
+            <ul id="notes-list">
+                <!-- Note caricate dinamicamente -->
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const notesList = document.getElementById('notes-list');
+            const noteContent = document.getElementById('note-content');
+
+            // Carica le note salvate
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+            // Renderizza la lista delle note
+            function renderNotes() {
+                notesList.innerHTML = "";
+                notes.forEach((note, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${index + 1}. ${note}`;
+
+                    // Pulsante elimina
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = "Elimina";
+                    deleteButton.classList.add('btn-secondary');
+                    deleteButton.addEventListener('click', () => {
+                        notes.splice(index, 1);
+                        localStorage.setItem("notes", JSON.stringify(notes));
+                        renderNotes();
+                    });
+
+                    li.appendChild(deleteButton);
+                    notesList.appendChild(li);
+                });
+            }
+
+            // Salva una nuova nota
+            document.getElementById('save-note').addEventListener('click', () => {
+                const content = noteContent.value.trim();
+                if (content) {
+                    notes.push(content);
+                    localStorage.setItem("notes", JSON.stringify(notes));
+                    renderNotes();
+                    noteContent.value = "";
+                } else {
+                    alert("Il contenuto della nota non può essere vuoto.");
+                }
+            });
+
+            // Render iniziale delle note
+            renderNotes();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,145 @@
+/* Stile Generale */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #6c6868;
+    color: #0f0;
+}
+
+header {
+    background-color: #000;
+    color: #0f0;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #0f0;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.2em;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #000;
+    color: #0f0;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #0f0;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #000;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #0f0;
+}
+
+.navbar-link {
+    color: #0f0;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-link:hover {
+    background-color: #0f0;
+    color: #000;
+}
+
+/* Form Elements */
+form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #0f0;
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #0f0;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #000;
+    color: #0f0;
+}
+
+form button {
+    background-color: #0f0;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+}
+
+/* Lista */
+ul {
+    padding: 0;
+    list-style: none;
+    color: #0f0;
+}
+
+ul li {
+    padding: 10px;
+    border-bottom: 1px solid #0f0;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+ul li button {
+    background-color: #0f0;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+ul li button:hover {
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+}
+
+/* Container */
+.container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #0f0;
+    border-radius: 5px;
+    background-color: #000;
+}

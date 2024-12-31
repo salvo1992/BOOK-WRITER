@@ -1,0 +1,46 @@
+<!-- Benvenuto - Home Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benvenuto - Il Vikingo del Web</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/navbar.js" defer></script>
+    <script src="assets/js/index.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Benvenuto nell'App di Scrittura</h1>
+        <p>Organizza e scrivi i tuoi libri con semplicità.</p>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <p>Con questa app puoi:</p>
+            <ul>
+                <li>Creare e gestire i tuoi libri.</li>
+                <li>Strutturare i capitoli e le sezioni.</li>
+                <li>Scrivere ogni pagina con dettagli.</li>
+                <li>Annotare idee e note per i tuoi progetti.</li>
+            </ul>
+        </section>
+
+        <section class="action">
+            <button id="start-book" class="btn-primary">Inizia un Nuovo Libro</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        document.getElementById('start-book').addEventListener('click', () => {
+            window.location.href = 'books.html';
+        });
+    </script>
+</body>
+</html>
+
+

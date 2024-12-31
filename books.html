@@ -1,0 +1,50 @@
+<!-- Books - Gestione dei Libri -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libri - Il Vikingo del Web</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/navbar.js" defer></script>
+    <script src="assets/js/books.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Gestione dei Libri</h1>
+        <p>Visualizza, crea e gestisci i tuoi libri.</p>
+    </header>
+
+    <main>
+        <section id="book-list" class="book-container">
+            <h2>I tuoi libri</h2>
+            <ul>
+                <!-- I libri verranno caricati dinamicamente qui -->
+            </ul>
+        </section>
+
+        <section class="action">
+            <button id="create-book" class="btn-primary">Crea un Nuovo Libro</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        document.getElementById('create-book').addEventListener('click', () => {
+            const title = prompt("Inserisci il titolo del nuovo libro:");
+            if (title) {
+                const books = JSON.parse(localStorage.getItem("books")) || [];
+                books.push({ title, chapters: [], introduction: "", content: {} });
+                localStorage.setItem("books", JSON.stringify(books));
+                const index = books.length - 1;
+                localStorage.setItem("currentBookIndex", index);
+                window.location.href = 'outline.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
