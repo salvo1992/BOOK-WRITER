@@ -18,7 +18,7 @@
     <main>
         <section id="book-list" class="book-container">
             <h2>I tuoi libri</h2>
-            <ul>
+            <ul id="book-list-container">
                 <!-- I libri verranno caricati dinamicamente qui -->
             </ul>
         </section>
@@ -31,20 +31,5 @@
     <footer>
         <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
     </footer>
-
-    <script>
-        document.getElementById('create-book').addEventListener('click', () => {
-            const title = prompt("Inserisci il titolo del nuovo libro:");
-            if (title) {
-                const books = JSON.parse(localStorage.getItem("books")) || [];
-                books.push({ title, chapters: [], introduction: "", content: {} });
-                localStorage.setItem("books", JSON.stringify(books));
-                const index = books.length - 1;
-                localStorage.setItem("currentBookIndex", index);
-                window.location.href = 'outline.html';
-            }
-        });
-    </script>
 </body>
 </html>
-

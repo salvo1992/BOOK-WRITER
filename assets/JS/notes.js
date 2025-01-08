@@ -1,58 +1,151 @@
-// notes.js - Logica per la gestione delle note e delle idee
-
+// notes.js - Gestione delle note tramite API
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("notes-form");
-    const notesList = document.getElementById("notes-list ul");
+    const API_BASE_URL = 'http://localhost:5500'; // URL del backend
+    const noteList = document.getElementById('notes-list');
+    const noteInput = document.getElementById('note-content');
+    const saveNoteButton = document.getElementById('save-note');
+    const currentBookTitle = document.getElementById('current-book-title');
+    const currentBookId = localStorage.getItem("currentBookId");
 
-    // Recupera le note dalla memoria locale
-    const notes = JSON.parse(localStorage.getItem("notes")) || [];
+    if (!currentBookId) {
+        console.warn("Nessun libro selezionato. Ritorna alla pagina iniziale.");
+        window.location.href = "books.html";
+        return;
+    }
 
-    // Funzione per aggiornare la lista delle note
-    function renderNotes() {
-        notesList.innerHTML = "";
-        notes.forEach((note, index) => {
-            const li = document.createElement("li");
-            li.textContent = note;
+    let currentBook = null;
 
-            // Pulsante per eliminare la nota
-            const deleteButton = document.createElement("button");
+    // Recupera i dettagli del libro
+    async function fetchBook() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`);
+            if (!response.ok) {
+                throw new Error('Errore nel recupero del libro.');
+            }
+            currentBook = await response.json();
+            if (currentBookTitle) currentBookTitle.textContent = currentBook.title;
+            renderNotes(currentBook.notes);
+        } catch (error) {
+            console.error("Errore durante il recupero del libro:", error.message);
+        }
+    }
+
+    // Mostra le note nella lista
+    function renderNotes(notes) {
+        noteList.innerHTML = "";
+        (notes || []).forEach((note, index) => {
+            const li = document.createElement('li');
+            const noteText = document.createElement('span');
+            noteText.textContent = `${index + 1}. ${note}`;
+
+            // Pulsante per modificare una nota
+            const editButton = document.createElement('button');
+            editButton.textContent = "Modifica";
+            editButton.classList.add("btn-secondary");
+            editButton.addEventListener('click', () => editNote(index));
+
+            // Pulsante per eliminare una nota
+            const deleteButton = document.createElement('button');
             deleteButton.textContent = "Elimina";
-            deleteButton.addEventListener("click", () => deleteNote(index));
+            deleteButton.classList.add("btn-secondary");
+            deleteButton.addEventListener('click', () => deleteNote(index));
 
+            li.appendChild(noteText);
+            li.appendChild(editButton);
             li.appendChild(deleteButton);
-            notesList.appendChild(li);
+            noteList.appendChild(li);
         });
     }
 
-    // Funzione per aggiungere una nuova nota
-    function addNote(event) {
-        event.preventDefault();
-
-        const noteContent = form.note.value;
+    // Salva una nuova nota
+    async function saveNote() {
+        const noteContent = noteInput.value.trim();
         if (!noteContent) {
-            alert("Il campo nota non può essere vuoto.");
+            alert("Il contenuto della nota non può essere vuoto.");
             return;
         }
 
-        notes.push(noteContent);
-        localStorage.setItem("notes", JSON.stringify(notes));
+        if (!currentBook.notes) currentBook.notes = [];
+        currentBook.notes.push(noteContent);
 
-        renderNotes();
-        form.reset();
+        try {
+            const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notes: currentBook.notes }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Errore nel salvataggio della nota.');
+            }
+
+            alert("Nota salvata con successo!");
+            renderNotes(currentBook.notes);
+            noteInput.value = "";
+        } catch (error) {
+            console.error("Errore durante il salvataggio della nota:", error.message);
+        }
     }
 
-    // Funzione per eliminare una nota
-    function deleteNote(index) {
-        notes.splice(index, 1);
-        localStorage.setItem("notes", JSON.stringify(notes));
-        renderNotes();
+    // Modifica una nota
+    async function editNote(index) {
+        const newContent = prompt("Modifica la nota:", currentBook.notes[index]);
+        if (newContent !== null) {
+            currentBook.notes[index] = newContent;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ notes: currentBook.notes }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Errore nella modifica della nota.');
+                }
+
+                alert("Nota modificata con successo!");
+                renderNotes(currentBook.notes);
+            } catch (error) {
+                console.error("Errore durante la modifica della nota:", error.message);
+            }
+        }
     }
 
-    // Event listener per aggiungere note
-    form.addEventListener("submit", addNote);
+    // Cancella una nota
+    async function deleteNote(index) {
+        if (!currentBook.notes) return;
+        currentBook.notes.splice(index, 1);
 
-    // Render iniziale delle note
-    renderNotes();
+        try {
+            const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notes: currentBook.notes }),
+            });
 
-    console.log("Pagina delle note caricata con successo!");
+            if (!response.ok) {
+                throw new Error('Errore nella cancellazione della nota.');
+            }
+
+            alert("Nota eliminata con successo!");
+            renderNotes(currentBook.notes);
+        } catch (error) {
+            console.error("Errore durante la cancellazione della nota:", error.message);
+        }
+    }
+
+    // Event listeners
+    if (saveNoteButton) {
+        saveNoteButton.addEventListener('click', saveNote);
+    }
+
+    // Recupera i dati del libro all'avvio
+    fetchBook();
 });

@@ -15,6 +15,12 @@
     </header>
 
     <main>
+        <!-- Titolo del Libro Selezionato -->
+        <section class="container">
+            <h2>Libro Selezionato</h2>
+            <p id="current-book-title">Caricamento...</p>
+        </section>
+
         <!-- Creazione della Nota -->
         <section class="container">
             <h2>Crea una Nuova Nota</h2>
@@ -34,54 +40,5 @@
     <footer>
         <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
     </footer>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const notesList = document.getElementById('notes-list');
-            const noteContent = document.getElementById('note-content');
-
-            // Carica le note salvate
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-            // Renderizza la lista delle note
-            function renderNotes() {
-                notesList.innerHTML = "";
-                notes.forEach((note, index) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${index + 1}. ${note}`;
-
-                    // Pulsante elimina
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = "Elimina";
-                    deleteButton.classList.add('btn-secondary');
-                    deleteButton.addEventListener('click', () => {
-                        notes.splice(index, 1);
-                        localStorage.setItem("notes", JSON.stringify(notes));
-                        renderNotes();
-                    });
-
-                    li.appendChild(deleteButton);
-                    notesList.appendChild(li);
-                });
-            }
-
-            // Salva una nuova nota
-            document.getElementById('save-note').addEventListener('click', () => {
-                const content = noteContent.value.trim();
-                if (content) {
-                    notes.push(content);
-                    localStorage.setItem("notes", JSON.stringify(notes));
-                    renderNotes();
-                    noteContent.value = "";
-                } else {
-                    alert("Il contenuto della nota non può essere vuoto.");
-                }
-            });
-
-            // Render iniziale delle note
-            renderNotes();
-        });
-    </script>
 </body>
 </html>
-

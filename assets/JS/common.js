@@ -60,4 +60,18 @@ function saveBooks(books) {
     saveToLocalStorage("books", books);
 }
 
+/**
+ * Funzione per avviare il download di un file
+ * @param {string} url - L'URL del file da scaricare
+ * @param {string} filename - Il nome del file da salvare
+ */
+function downloadFile(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
 console.log("Script comune caricato con successo!");

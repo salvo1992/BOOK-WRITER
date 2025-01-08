@@ -12,11 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Note", link: "notes.html" }
     ];
 
+    const currentPath = window.location.pathname.split("/").pop();
+
     pages.forEach(page => {
         const anchor = document.createElement("a");
         anchor.href = page.link;
         anchor.textContent = page.name;
         anchor.classList.add("navbar-link");
+
+        // Aggiungi classe 'active' alla pagina corrente
+        if (page.link === currentPath) {
+            anchor.classList.add("active");
+        }
+
         navbar.appendChild(anchor);
     });
 

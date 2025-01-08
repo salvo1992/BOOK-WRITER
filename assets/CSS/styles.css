@@ -3,13 +3,14 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #6c6868;
+    background-color: #110eae95;
     color: #0f0;
+    overflow-y: auto;
 }
 
 header {
-    background-color: #000;
-    color: #0f0;
+    background-color: #04843b;
+    color: rgb(9, 9, 9);
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #0f0;
@@ -25,7 +26,7 @@ header p {
 }
 
 main {
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 footer {

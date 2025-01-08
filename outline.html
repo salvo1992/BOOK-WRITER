@@ -15,10 +15,10 @@
     </header>
 
     <main>
-        <!-- Titolo del Libro -->
+        <!-- Titolo del Libro Selezionato -->
         <section class="container">
-            <h2>Titolo</h2>
-            <input type="text" id="book-title" placeholder="Inserisci o modifica il titolo">
+            <h2>Libro Selezionato</h2>
+            <p id="current-book-title">Caricamento...</p>
         </section>
 
         <!-- Indice -->
@@ -28,12 +28,13 @@
                 <!-- Capitoli e sotto-capitoli dinamici -->
             </ul>
             <button id="add-chapter" class="btn-secondary">Aggiungi Capitolo</button>
+            <button id="add-subchapter" class="btn-secondary">Aggiungi Sotto-Capitolo</button>
         </section>
 
         <!-- Introduzione -->
         <section class="container">
             <h2>Introduzione</h2>
-            <textarea id="book-introduction" placeholder="Scrivi l'introduzione..."></textarea>
+            <textarea id="book-introduction" placeholder="Scrivi l'introduzione..." style="width: 80%; height: 30%; resize: none;"></textarea>
         </section>
 
         <section class="action">
@@ -44,53 +45,5 @@
     <footer>
         <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
     </footer>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const titleInput = document.getElementById('book-title');
-            const introductionInput = document.getElementById('book-introduction');
-            const chapterList = document.getElementById('chapter-list');
-
-            const books = JSON.parse(localStorage.getItem("books")) || [];
-            const currentIndex = parseInt(localStorage.getItem("currentBookIndex"), 10);
-
-            if (isNaN(currentIndex) || !books[currentIndex]) {
-                alert("Nessun libro selezionato. Ritorna alla pagina dei libri.");
-                window.location.href = 'books.html';
-                return;
-            }
-
-            const currentBook = books[currentIndex];
-
-            // Popola i dati iniziali
-            titleInput.value = currentBook.title || "";
-            introductionInput.value = currentBook.introduction || "";
-            (currentBook.chapters || []).forEach(chapter => {
-                const li = document.createElement('li');
-                li.textContent = chapter;
-                chapterList.appendChild(li);
-            });
-
-            // Aggiungi un nuovo capitolo
-            document.getElementById('add-chapter').addEventListener('click', () => {
-                const chapterName = prompt("Nome del nuovo capitolo:");
-                if (chapterName) {
-                    const li = document.createElement('li');
-                    li.textContent = chapterName;
-                    chapterList.appendChild(li);
-                    currentBook.chapters = [...(currentBook.chapters || []), chapterName];
-                    localStorage.setItem("books", JSON.stringify(books));
-                }
-            });
-
-            // Salva i dati del libro
-            document.getElementById('save-outline').addEventListener('click', () => {
-                currentBook.title = titleInput.value;
-                currentBook.introduction = introductionInput.value;
-                localStorage.setItem("books", JSON.stringify(books));
-                window.location.href = 'writer.html';
-            });
-        });
-    </script>
 </body>
 </html>
