@@ -1,7 +1,7 @@
 // outline.js - Gestione della struttura del libro tramite API
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = 'http://localhost:5500'; // URL del backend
+    const API_BASE_URL = `${APP_SERVER_BASE_URL}`; // URL del backend
     const currentBookTitle = document.getElementById('current-book-title');
     const chapterList = document.getElementById('chapter-list');
     const introductionInput = document.getElementById('book-introduction');

@@ -1,7 +1,7 @@
 // books.js - Gestione dei Libri tramite API
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = 'http://localhost:5500'; // URL del backend
+    const API_BASE_URL = `${APP_SERVER_BASE_URL}`; // URL del backend
     const bookList = document.getElementById("book-list");
     const deleteBookButton = document.getElementById("delete-book"); // Recupera il pulsante elimina libro
 
