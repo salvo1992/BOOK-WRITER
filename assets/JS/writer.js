@@ -1,5 +1,3 @@
-// writer.js - Gestione della scrittura dei capitoli tramite API
-
 document.addEventListener("DOMContentLoaded", () => {
     const API_BASE_URL = 'http://localhost:5500'; // URL del backend
     const currentBookTitle = document.getElementById('current-book-title');
@@ -11,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentBookId = localStorage.getItem("currentBookId");
 
     if (!currentBookId) {
-        console.error("Errore: Nessun ID libro trovato. Ritorno alla pagina dei libri.");
+        console.warn("Nessun libro selezionato. Ritorno alla pagina iniziale.");
         alert("Nessun libro selezionato. Torna alla pagina iniziale.");
         window.location.href = "books.html";
         return;
@@ -22,15 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // Recupera i dettagli del libro
     async function fetchBook() {
         try {
+            console.log(`Tentativo di recuperare il libro con ID: ${currentBookId}`);
             const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`);
             if (!response.ok) {
                 throw new Error('Errore nel recupero del libro.');
             }
             currentBook = await response.json();
-            currentBookTitle.textContent = currentBook.title;
+            console.log("Libro recuperato:", currentBook);
+
+            // Mostra il titolo del libro selezionato
+            if (currentBookTitle) currentBookTitle.textContent = currentBook.title;
+
+            // Popola il selettore dei capitoli
             populateChapters(currentBook.chapters || []);
         } catch (error) {
             console.error("Errore durante il recupero del libro:", error.message);
+            alert("Errore nel recupero del libro. Torna alla pagina iniziale.");
+            window.location.href = "books.html";
         }
     }
 
@@ -47,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 chapter.subchapters.forEach((subchapter, subIndex) => {
                     const subchapterOption = document.createElement('option');
                     subchapterOption.value = `chapter-${index}-sub-${subIndex}`;
-                    subchapterOption.textContent = `${index + 1}.${subIndex + 1} ${subchapter}`;
+                    subchapterOption.textContent = `${index + 1}.${subIndex + 1} ${subchapter.title}`;
                     chapterSelector.appendChild(subchapterOption);
                 });
             }
@@ -59,12 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedValue = chapterSelector.value;
         const [chapterIndex, subIndex] = selectedValue.includes("sub")
             ? selectedValue.replace("chapter-", "").split("-sub-").map(Number)
-            : [parseInt(selectedValue.replace("chapter-", "")), null];
+            : [parseInt(selectedValue.replace("chapter-", ""), 10), null];
 
         if (subIndex === null) {
-            contentArea.value = currentBook.chapters[chapterIndex].content || "";
+            contentArea.value = currentBook.chapters[chapterIndex]?.content || "";
         } else {
-            contentArea.value = currentBook.chapters[chapterIndex].subchapters[subIndex].content || "";
+            contentArea.value = currentBook.chapters[chapterIndex]?.subchapters[subIndex]?.content || "";
         }
     }
 
@@ -73,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedValue = chapterSelector.value;
         const [chapterIndex, subIndex] = selectedValue.includes("sub")
             ? selectedValue.replace("chapter-", "").split("-sub-").map(Number)
-            : [parseInt(selectedValue.replace("chapter-", "")), null];
+            : [parseInt(selectedValue.replace("chapter-", ""), 10), null];
 
         const content = contentArea.value;
 
@@ -105,36 +111,39 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Elimina il contenuto del capitolo o sotto-capitolo selezionato
+    // Cancella il contenuto del capitolo o sotto-capitolo selezionato
     async function deleteContent() {
         const selectedValue = chapterSelector.value;
         const [chapterIndex, subIndex] = selectedValue.includes("sub")
             ? selectedValue.replace("chapter-", "").split("-sub-").map(Number)
-            : [parseInt(selectedValue.replace("chapter-", "")), null];
+            : [parseInt(selectedValue.replace("chapter-", ""), 10), null];
 
-        if (subIndex === null) {
-            currentBook.chapters[chapterIndex].content = "";
-        } else {
-            currentBook.chapters[chapterIndex].subchapters[subIndex].content = "";
+        const type = subIndex === null ? 'chapter' : 'subchapter';
+
+        if (!confirm(`Sei sicuro di voler eliminare ${type === 'chapter' ? 'questo capitolo' : 'questo sotto-capitolo'}?`)) {
+            return;
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/books/${currentBookId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ chapters: currentBook.chapters }),
-            });
+            const response = await fetch(
+                `${API_BASE_URL}/books/${currentBookId}?type=${type}&chapterIndex=${chapterIndex}&subchapterIndex=${subIndex}`,
+                { method: 'DELETE' }
+            );
 
             if (!response.ok) {
-                throw new Error('Errore nella cancellazione del contenuto.');
+                throw new Error('Errore durante l\'eliminazione del contenuto.');
             }
 
-            alert("Contenuto eliminato con successo!");
-            contentArea.value = "";
+            alert(`${type === 'chapter' ? 'Capitolo' : 'Sotto-capitolo'} eliminato con successo!`);
+            if (type === 'chapter') {
+                currentBook.chapters.splice(chapterIndex, 1);
+            } else {
+                currentBook.chapters[chapterIndex].subchapters.splice(subIndex, 1);
+            }
+            populateChapters(currentBook.chapters);
+            contentArea.value = ''; // Svuota l'area di testo
         } catch (error) {
-            console.error("Errore durante la cancellazione del contenuto:", error.message);
+            console.error("Errore durante l'eliminazione del contenuto:", error.message);
         }
     }
 
@@ -146,3 +155,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Recupera i dati iniziali del libro
     fetchBook();
 });
+

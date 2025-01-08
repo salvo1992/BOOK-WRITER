@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #110eae95;
+    background-color: #101e0f;
     color: #0f0;
     overflow-y: auto;
 }
@@ -104,43 +104,95 @@ form button:hover {
     border: 1px solid #0f0;
 }
 
-/* Lista */
-ul {
-    padding: 0;
+/* Lista dei libri */
+.book-container {
+    width: 80%;
+    margin: 20px auto;
+}
+
+#book-list-container {
     list-style: none;
-    color: #0f0;
+    padding: 0;
+    margin: 0;
 }
 
-ul li {
-    padding: 10px;
-    border-bottom: 1px solid #0f0;
-}
-
-ul li:last-child {
-    border-bottom: none;
-}
-
-ul li button {
-    background-color: #0f0;
-    color: #000;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-ul li button:hover {
+#book-list-container li {
     background-color: #000;
     color: #0f0;
-    border: 1px solid #0f0;
-}
-
-/* Container */
-.container {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 15px;
     border: 1px solid #0f0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Bottoni in linea */
+#book-list-container li button {
+    margin-left: 10px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    padding: 8px 12px;
     border-radius: 5px;
-    background-color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9em;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Pulsante "Crea un Nuovo Libro" */
+.create-book-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.create-book-section button {
+    font-size: 1rem;
+    padding: 10px 20px;
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+    #book-list-container li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #book-list-container li button {
+        margin: 10px 0 0;
+        width: 100%;
+    }
 }

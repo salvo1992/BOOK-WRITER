@@ -55,53 +55,92 @@ router.post('/books', async (req, res) => {
     }
 });
 
-
 router.put('/books/:id', async (req, res) => {
-    console.log('Richiesta ricevuta per la creazione del libro:', req.body);
+    console.log('Richiesta ricevuta per l aggiornamento del libro:', req.body);
 
     try {
-        
-     
+        const { title, introduction, chapters, conclusion, content, notes } = req.body;
 
-        const newBook = new Book({
-            title: req.body.title,
-            chapters: [],
-            introduction: '',
-            conclusion: '',
-            content: [],
-            notes: [],
-        });
+        const updatedFields = {};
 
-        const savedBook = await newBook.save();
-        console.log('Libro salvato nel database:', savedBook);
+        if (title) updatedFields.title = title;
+        if (introduction) updatedFields.introduction = introduction;
+        if (chapters) updatedFields.chapters = chapters;
+        if (conclusion) updatedFields.conclusion = conclusion;
+        if (content) updatedFields.content = content;
+        if (notes) updatedFields.notes = notes;
 
-        res.status(201).json(savedBook);
+        const updatedBook = await Book.findByIdAndUpdate(
+            req.params.id,
+            { $set: updatedFields },
+            { new: true }
+        );
+
+        if (!updatedBook) {
+            return res.status(404).json({ error: 'Libro non trovato.' });
+        }
+
+        console.log('Libro aggiornato:', updatedBook);
+        res.status(200).json(updatedBook);
     } catch (error) {
-        console.error('Errore nella creazione del libro:', error.message);
-        res.status(500).json({ error: 'Errore nella creazione del libro.' });
-    }
-});
-
-
-
-
-router.put('/books/:id', async (req, res) => {
-    try {
-        const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updatedBook);
-    } catch (error) {
-        res.status(500).json({ error: 'Errore nell\'aggiornamento del libro.' });
+        console.error('Errore nell aggiornamento del libro:', error.message);
+        res.status(500).json({ error: 'Errore nell aggiornamento del libro.' });
     }
 });
 
 router.delete('/books/:id', async (req, res) => {
+    const { type, chapterIndex, subchapterIndex, noteIndex } = req.query; // Parametri dinamici
+
     try {
-        await Book.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Libro eliminato con successo.' });
+        const book = await Book.findById(req.params.id);
+        if (!book) {
+            return res.status(404).json({ error: 'Libro non trovato.' });
+        }
+
+        switch (type) {
+            case 'chapter': // Elimina un capitolo
+                if (chapterIndex === undefined || !book.chapters[chapterIndex]) {
+                    return res.status(400).json({ error: 'Capitolo non valido.' });
+                }
+                book.chapters.splice(chapterIndex, 1);
+                break;
+
+            case 'subchapter': // Elimina un sotto-capitolo
+                if (
+                    chapterIndex === undefined ||
+                    subchapterIndex === undefined ||
+                    !book.chapters[chapterIndex] ||
+                    !book.chapters[chapterIndex].subchapters[subchapterIndex]
+                ) {
+                    return res.status(400).json({ error: 'Sotto-capitolo non valido.' });
+                }
+                book.chapters[chapterIndex].subchapters.splice(subchapterIndex, 1);
+                break;
+
+            case 'note': // Elimina una nota
+                if (noteIndex === undefined || !book.notes[noteIndex]) {
+                    return res.status(400).json({ error: 'Nota non valida.' });
+                }
+                book.notes.splice(noteIndex, 1);
+                break;
+
+            case 'book': // Elimina l'intero libro
+                await Book.findByIdAndDelete(req.params.id);
+                return res.json({ message: 'Libro eliminato con successo.' });
+
+            default:
+                return res.status(400).json({ error: 'Tipo di elemento non valido.' });
+        }
+
+        // Salva le modifiche al libro
+        await book.save();
+        res.json({ message: 'Elemento eliminato con successo.', book });
     } catch (error) {
-        res.status(500).json({ error: 'Errore nell\'eliminazione del libro.' });
+        console.error('Errore durante l\'eliminazione:', error.message);
+        res.status(500).json({ error: 'Errore durante l\'eliminazione.' });
     }
 });
+
 
 // Endpoint per la rilegatura del libro
 router.get('/books/:id/full', async (req, res) => {
@@ -141,4 +180,5 @@ router.get('/books/:id/full', async (req, res) => {
 });
 
 module.exports = router;
+
 
