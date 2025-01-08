@@ -4,7 +4,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.3",
-    "pm2": "^5.3.1"
+    "pm2": "^5.4.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
