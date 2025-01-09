@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = `${APP_SERVER_BASE_URL}`; // URL del backend
+    const API_BASE_URL = 'https://book-writer.onrender.com'; // URL del backend
     const currentBookTitle = document.getElementById('current-book-title');
     const chapterSelector = document.getElementById('chapter-selector');
     const contentArea = document.getElementById('chapter-content');
