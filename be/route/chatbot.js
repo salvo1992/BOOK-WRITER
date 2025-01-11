@@ -1,5 +1,5 @@
 const express = require("express");
-const fetch = require("node-fetch"); // Usa node-fetch per effettuare richieste
+
 const router = express.Router();
 
 router.post("/chatbot", async (req, res) => {
