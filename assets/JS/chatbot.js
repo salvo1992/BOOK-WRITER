@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Funzione per inviare una richiesta all'API del backend
     async function fetchChatResponse(prompt) {
         try {
-            const response = await fetch("http://localhost:5500/api/chatbot", {
+            const response = await fetch("https://book-writer.onrender.com/chatbot", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

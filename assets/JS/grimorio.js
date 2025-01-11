@@ -1,7 +1,7 @@
 // grimorio.js - Gestione dinamica del Grimorio
 
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = 'http://localhost:5500'; // URL del backend
+    const API_BASE_URL = 'https://book-writer.onrender.com'; // URL del backend
     const currentBookTitle = document.getElementById('current-book-title');
     const categoryList = document.getElementById('category-list');
     const elementsList = document.getElementById('elements-list');
