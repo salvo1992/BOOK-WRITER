@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const apiRoute = require('./route/api');
+
+const chatbotRoute = require('./route/chatbot');
 // Configurazione dell'ambiente
 dotenv.config();
 // Porta del server
@@ -28,6 +30,7 @@ app.use(express.json());
 })();
 
 app.use('/', apiRoute);
+app.use('/', chatbotRoute);
 
 
 

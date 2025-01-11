@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveContentButton = document.getElementById('save-content');
     const deleteContentButton = document.getElementById('delete-content');
 
+    contentArea.style.height = '40vh'; // 40% dell'altezza della finestra
+    contentArea.style.resize = 'vertical'; // Consenti il ridimensionamento verticale manuale
+
     const currentBookId = localStorage.getItem("currentBookId");
 
     if (!currentBookId) {
@@ -147,6 +150,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Pulsante per visualizzare il Grimorio
+    const viewGrimorioButton = document.createElement('button');
+    viewGrimorioButton.textContent = "Visualizza Grimorio";
+    viewGrimorioButton.className = "btn-primary";
+    viewGrimorioButton.addEventListener('click', () => {
+        window.location.href = "grimorio.html";
+    });
+
+    const header = document.querySelector('header');
+    header.appendChild(viewGrimorioButton);
+
     // Event listeners
     chapterSelector.addEventListener('change', loadContent);
     saveContentButton.addEventListener('click', saveContent);
@@ -155,4 +169,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // Recupera i dati iniziali del libro
     fetchBook();
 });
-

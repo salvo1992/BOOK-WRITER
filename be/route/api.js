@@ -43,6 +43,7 @@ router.post('/books', async (req, res) => {
             conclusion: '',
             content: [],
             notes: [],
+            grimorio: {} // Aggiunto Grimorio iniziale vuoto
         });
 
         const savedBook = await newBook.save();
@@ -59,7 +60,7 @@ router.put('/books/:id', async (req, res) => {
     console.log('Richiesta ricevuta per l aggiornamento del libro:', req.body);
 
     try {
-        const { title, introduction, chapters, conclusion, content, notes } = req.body;
+        const { title, introduction, chapters, conclusion, content, notes, grimorio } = req.body;
 
         const updatedFields = {};
 
@@ -69,6 +70,7 @@ router.put('/books/:id', async (req, res) => {
         if (conclusion) updatedFields.conclusion = conclusion;
         if (content) updatedFields.content = content;
         if (notes) updatedFields.notes = notes;
+        if (grimorio) updatedFields.grimorio = grimorio; // Gestione Grimorio
 
         const updatedBook = await Book.findByIdAndUpdate(
             req.params.id,
@@ -89,7 +91,7 @@ router.put('/books/:id', async (req, res) => {
 });
 
 router.delete('/books/:id', async (req, res) => {
-    const { type, chapterIndex, subchapterIndex, noteIndex } = req.query; // Parametri dinamici
+    const { type, chapterIndex, subchapterIndex, noteIndex, category, elementIndex} = req.query; // Parametri dinamici
 
     try {
         const book = await Book.findById(req.params.id);
@@ -123,6 +125,21 @@ router.delete('/books/:id', async (req, res) => {
                 }
                 book.notes.splice(noteIndex, 1);
                 break;
+
+            case 'grimorio': // Elimina un elemento del Grimorio
+                if (
+                    !category ||
+                    !book.grimorio[category] ||
+                    elementIndex === undefined ||
+                    !book.grimorio[category][elementIndex]
+                ) {
+                    return res.status(400).json({ error: 'Elemento Grimorio non valido.' });
+                }
+                book.grimorio[category].splice(elementIndex, 1);
+                if (book.grimorio[category].length === 0) {
+                    delete book.grimorio[category];
+                }
+                break;    
 
             case 'book': // Elimina l'intero libro
                 await Book.findByIdAndDelete(req.params.id);
@@ -167,6 +184,11 @@ router.get('/books/:id/full', async (req, res) => {
                 <ul>
                     ${book.notes.map(note => `<li>${note}</li>`).join('')}
                 </ul>
+                <h2>Grimorio</h2>
+                ${Object.entries(book.grimorio || {}).map(([category, elements]) => `
+                    <h3>${category}</h3>
+                    <ul>${elements.map(element => `<li>${element.title || 'Senza titolo'} - ${element.description || ''}</li>`).join('')}</ul>
+                `).join('')}
             </body>
             </html>
         `;

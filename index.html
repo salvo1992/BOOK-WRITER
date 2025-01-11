@@ -1,4 +1,3 @@
-<!-- Benvenuto - Home Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,41 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Benvenuto - Il Vikingo del Web</title>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/index.css">
     <script src="assets/js/navbar.js" defer></script>
     <script src="assets/js/index.js" defer></script>
 </head>
 <body>
-    <header>
+    <header class="header">
+        <img src="assets/images/logo.png" alt="Logo App di Scrittura" class="logo">
         <h1>Benvenuto nell'App di Scrittura</h1>
         <p id="welcome-message">Organizza e scrivi i tuoi libri con semplicità.</p>
     </header>
 
     <main>
-        <section class="welcome">
-            <p>Con questa app puoi:</p>
-            <ul>
-                <li>Creare e gestire i tuoi libri.</li>
-                <li>Strutturare i capitoli e le sezioni.</li>
-                <li>Scrivere ogni pagina con dettagli.</li>
-                <li>Annotare idee e note per i tuoi progetti.</li>
-            </ul>
+        <!-- Card di Presentazione -->
+        <section class="presentation">
+            <div class="presentation-card">
+                <h2>Cos'è questa app?</h2>
+                <p>
+                    L'App di Scrittura ti permette di:
+                </p>
+                <ul>
+                    <li>Creare e gestire i tuoi libri in modo semplice.</li>
+                    <li>Strutturare capitoli, sezioni e note per ogni progetto.</li>
+                    <li>Scrivere testi dettagliati e mantenere un'organizzazione impeccabile.</li>
+                    <li>Gestire personaggi, luoghi, magie e altro tramite il Grimorio.</li>
+                    <li>Ottenere suggerimenti per la scrittura tramite il nostro chatbot AI!</li>
+                </ul>
+                <p>
+                    Scopri di più esplorando le sezioni dell'app!
+                </p>
+            </div>
         </section>
 
-        <section class="action">
+        <!-- Sezione Azioni -->
+        <section class="actions">
             <button id="start-book" class="btn-primary">Inizia un Nuovo Libro</button>
+            <button id="account" class="btn-secondary">Accedi al Tuo Account</button>
+            <button id="feedback" class="btn-secondary">Lascia un Feedback</button>
+            <button id="chatbot" class="btn-secondary">Chatbot AI</button>
+        </section>
+
+        <!-- Collegamento al sito -->
+        <section class="external-link">
+            <a href="https://www.ilvikingodelweb.com" target="_blank" rel="noopener noreferrer" class="btn-link">
+                Visita Il Vikingo del Web
+            </a>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
     </footer>
-
-    <script>
-        document.getElementById('start-book').addEventListener('click', () => {
-            window.location.href = 'books.html';
-        });
-    </script>
 </body>
 </html>
-
-

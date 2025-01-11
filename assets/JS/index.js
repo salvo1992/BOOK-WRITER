@@ -1,5 +1,3 @@
-// index.js - Funzioni iniziali dell'app
-
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Applicazione inizializzata.");
 
@@ -16,21 +14,36 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Elemento welcome-message non trovato nel DOM.");
         }
 
-        // Verifica della connessione al server (esempio)
-        checkServerConnection();
-    }
+        // Configurazione chatbot button
+        const chatbotButton = document.getElementById("chatbot");
+        if (chatbotButton) {
+            chatbotButton.addEventListener("click", () => {
+                window.location.href = "chatbot.html";
+            });
+        }
 
-    // Funzione per verificare la connessione al server
-    async function checkServerConnection() {
-        try {
-            const response = await fetch("/api/ping");
-            if (response.ok) {
-                console.log("Connessione al server riuscita.");
-            } else {
-                console.error("Errore nella connessione al server.");
-            }
-        } catch (error) {
-            console.error("Errore nella connessione al server:", error);
+        // Configura il pulsante per iniziare un nuovo libro
+        const startBookButton = document.getElementById("start-book");
+        if (startBookButton) {
+            startBookButton.addEventListener("click", () => {
+                window.location.href = "books.html";
+            });
+        }
+
+        // Configura il pulsante per accedere all'account
+        const accountButton = document.getElementById("account");
+        if (accountButton) {
+            accountButton.addEventListener("click", () => {
+                alert("Funzione account in arrivo!");
+            });
+        }
+
+        // Configura il pulsante per feedback
+        const feedbackButton = document.getElementById("feedback");
+        if (feedbackButton) {
+            feedbackButton.addEventListener("click", () => {
+                alert("Grazie per il tuo feedback! Questa funzione sarà presto implementata.");
+            });
         }
     }
 

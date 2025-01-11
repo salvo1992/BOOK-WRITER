@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grimorio</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/card.css">
+    <script src="assets/js/navbar.js" defer></script>
+    <script src="assets/js/grimorio.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Grimorio</h1>
+        <p>Gestisci personaggi, luoghi, magie e molto altro per il tuo libro.</p>
+    </header>
+
+    <nav class="navbar" id="navbar"></nav>
+
+    <main>
+        <!-- Titolo del Libro Selezionato -->
+        <section class="container">
+            <h2>Libro Selezionato</h2>
+            <p id="current-book-title">Caricamento...</p>
+        </section>
+    
+        <!-- Sezione Indice -->
+        <section id="grimorio-index" class="container">
+            <h2>Indice</h2>
+            <ul id="category-list">
+                <li class="category-item" data-category="Personaggi">Personaggi</li>
+                <li class="category-item" data-category="Creature Magiche">Creature Magiche</li>
+                <li class="category-item" data-category="Luoghi">Luoghi</li>
+                <li class="category-item" data-category="Mappe">Mappe</li>
+                <li class="category-item" data-category="Invenzioni">Invenzioni</li>
+                <li class="category-item" data-category="Magie">Magie</li>
+                <li class="category-item" data-category="Città">Città</li>
+                <!-- Categorie dinamiche aggiuntive verranno caricate qui -->
+            </ul>
+            <button id="add-category" class="btn-primary">Aggiungi Categoria</button>
+        </section>
+    
+        <!-- Sezione Contenuto della Categoria -->
+        <section id="category-content" class="container">
+            <h2 id="selected-category">Seleziona una categoria</h2>
+            <div id="elements-list" class="card-container">
+                <!-- Elementi dinamici verranno mostrati qui -->
+            </div>
+            <button id="add-element" class="btn-primary" style="display:none;">Aggiungi Elemento</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Il Vikingo del Web. Tutti i diritti riservati.</p>
+    </footer>
+</body>
+</html>

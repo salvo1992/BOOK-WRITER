@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const API_BASE_URL = 'https://book-writer.onrender.com'; // URL del backend
     const bookList = document.getElementById("book-list");
-    const deleteBookButton = document.getElementById("delete-book"); // Recupera il pulsante elimina libro
+    const createBookButton = document.getElementById("create-book");
 
     if (!bookList) {
         console.warn("Elemento book-list non trovato nel DOM. La pagina potrebbe non funzionare correttamente.");
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         books.forEach(book => {
             const li = document.createElement("li");
             li.textContent = book.title;
-    
+
             // Pulsante per selezionare il libro
             const selectButton = document.createElement("button");
             selectButton.textContent = "Seleziona";
@@ -41,15 +41,53 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("currentBookId", book._id);
                 alert(`Libro selezionato: ${book.title}`);
             });
-    
 
             // Pulsante per scaricare il libro completo
-        const downloadButton = document.createElement("button");
-        downloadButton.textContent = "Scarica";
-        downloadButton.classList.add("btn-secondary");
-        downloadButton.addEventListener("click", () => {
-            window.location.href = `${API_BASE_URL}/books/${book._id}/full`;
+            const downloadButton = document.createElement("button");
+            downloadButton.textContent = "Scarica";
+            downloadButton.classList.add("btn-secondary");
+            downloadButton.addEventListener("click", () => {
+                window.location.href = `${API_BASE_URL}/books/${book._id}/full`;
+            });
+
+            // Pulsante per eliminare il libro
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Elimina";
+            deleteButton.classList.add("btn-danger");
+            deleteButton.addEventListener("click", async () => {
+                if (confirm(`Sei sicuro di voler eliminare il libro "${book.title}"?`)) {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/books/${book._id}?type=book`, { method: 'DELETE' });
+                        if (!response.ok) {
+                            const errorDetails = await response.json();
+                            throw new Error(errorDetails.error || 'Errore durante l\'eliminazione del libro.');
+                        }
+
+                        alert("Libro eliminato con successo!");
+                        fetchBooks(); // Ricarica la lista dei libri
+                    } catch (error) {
+                        console.error("Errore durante l'eliminazione del libro:", error.message);
+                    }
+                }
+            });
+
+            // Pulsante per accedere al Grimorio
+            const grimorioButton = document.createElement("button");
+            grimorioButton.textContent = "Grimorio";
+            grimorioButton.classList.add("btn-secondary");
+            grimorioButton.addEventListener("click", () => {
+                console.log(`Apertura Grimorio per il libro con ID: ${book._id}`);
+                localStorage.setItem("currentBookId", book._id);
+                window.location.href = "grimorio.html";
+            });
+
+            li.appendChild(selectButton);
+            li.appendChild(downloadButton);
+            li.appendChild(deleteButton);
+            li.appendChild(grimorioButton);
+            bookList.appendChild(li);
         });
+    }
 
     // Crea un nuovo libro
     async function createBook(title) {
@@ -79,8 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Pulsante per creare un nuovo libro
-    const createBookButton = document.getElementById("create-book");
+    // Assegna l'evento al pulsante per creare un nuovo libro
     if (createBookButton) {
         createBookButton.addEventListener("click", () => {
             const title = prompt("Inserisci il titolo del nuovo libro:");
@@ -92,39 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Pulsante create-book non trovato nel DOM.");
     }
 
-    // Pulsante per eliminare il libro
-const deleteButton = document.createElement("button");
-deleteButton.textContent = "Elimina";
-deleteButton.classList.add("btn-danger");
-
-deleteButton.addEventListener("click", async () => {
-    if (confirm(`Sei sicuro di voler eliminare il libro "${book.title}"?`)) {
-        try {
-            // Effettua la richiesta DELETE con il tipo 'book'
-            const response = await fetch(`${API_BASE_URL}/books/${book._id}?type=book`, { method: 'DELETE' });
-            
-            if (!response.ok) {
-                const errorDetails = await response.json();
-                throw new Error(errorDetails.error || 'Errore durante l\'eliminazione del libro.');
-            }
-
-            alert("Libro eliminato con successo!");
-            fetchBooks(); // Ricarica la lista dei libri
-        } catch (error) {
-            console.error("Errore durante l'eliminazione del libro:", error.message);
-        }
-    }
-});
-
-    li.appendChild(selectButton);
-    li.appendChild(downloadButton);
-    li.appendChild(deleteButton);
-    bookList.appendChild(li);
-});
-}
-
     // Recupera e visualizza i libri all'avvio
     fetchBooks();
 });
-
-

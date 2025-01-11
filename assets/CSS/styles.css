@@ -196,3 +196,99 @@ form button:hover {
         width: 100%;
     }
 }
+
+
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Nascondi la sidebar */
+    width: 250px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Sfondo trasparente */
+    color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0; /* Mostra la sidebar */
+}
+
+.sidebar-link {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background-color: #575757;
+    color: #fff;
+}
+
+/* Pulsante di toggle */
+.sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background-color: #575757;
+}
+
+/* Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 900;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -250px;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+}
+
+#chapter-content {
+    height: 40vh; /* 40% dell'altezza della finestra */
+    resize: vertical; /* Permette il ridimensionamento verticale manuale */
+    padding: 10px; /* Aggiunge un po' di spazio interno per migliorare la leggibilità */
+    font-size: 1rem; /* Dimensione del testo leggibile */
+}

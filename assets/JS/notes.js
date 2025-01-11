@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentBookId = localStorage.getItem("currentBookId");
 
     if (!currentBookId) {
-        console.warn("Nessun libro selezionato. Ritorna alla pagina iniziale.");
+        console.warn("Nessun libro selezionato. Ritorno alla pagina iniziale.");
         window.location.href = "books.html";
         return;
     }
@@ -54,6 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
             li.appendChild(deleteButton);
             noteList.appendChild(li);
         });
+
+        // Aggiungi pulsante per aprire il Grimorio
+        const grimorioButton = document.createElement('button');
+        grimorioButton.textContent = "Apri Grimorio";
+        grimorioButton.className = "btn-primary";
+        grimorioButton.addEventListener('click', () => {
+            window.location.href = "grimorio.html";
+        });
+
+        noteList.appendChild(grimorioButton);
     }
 
     // Salva una nuova nota
@@ -115,31 +125,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-   // Cancella una nota
-async function deleteNote(index) {
-    if (!confirm(`Sei sicuro di voler eliminare la nota ${index + 1}?`)) return;
+    // Cancella una nota
+    async function deleteNote(index) {
+        if (!confirm(`Sei sicuro di voler eliminare la nota ${index + 1}?`)) return;
 
-    try {
-        // Modifica l'URL per includere il tipo e l'indice della nota come query string
-        const response = await fetch(`${API_BASE_URL}/books/${currentBookId}?type=note&noteIndex=${index}`, {
-            method: 'DELETE',
-        });
+        try {
+            const response = await fetch(`${API_BASE_URL}/books/${currentBookId}?type=note&noteIndex=${index}`, {
+                method: 'DELETE',
+            });
 
-        if (!response.ok) {
-            const errorDetails = await response.json();
-            throw new Error(errorDetails.error || 'Errore durante l\'eliminazione della nota.');
+            if (!response.ok) {
+                const errorDetails = await response.json();
+                throw new Error(errorDetails.error || 'Errore durante l\'eliminazione della nota.');
+            }
+
+            alert("Nota eliminata con successo!");
+            currentBook.notes.splice(index, 1); // Aggiorna la lista localmente
+            renderNotes(currentBook.notes);
+        } catch (error) {
+            console.error("Errore durante l'eliminazione della nota:", error.message);
         }
-
-        alert("Nota eliminata con successo!");
-        // Aggiorna la lista delle note localmente
-        currentBook.notes.splice(index, 1);
-        renderNotes(currentBook.notes);
-    } catch (error) {
-        console.error("Errore durante l'eliminazione della nota:", error.message);
     }
-}
 
-    // Event listeners
+    // Event listener per salvare una nuova nota
     if (saveNoteButton) {
         saveNoteButton.addEventListener('click', saveNote);
     }

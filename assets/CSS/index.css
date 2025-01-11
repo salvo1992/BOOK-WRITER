@@ -1,0 +1,72 @@
+/* Stile per la pagina index */
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #222;
+    color: #0f0;
+}
+
+.logo {
+    max-width: 250px;
+    margin-bottom: 15px;
+}
+
+.presentation {
+    margin: 20px;
+    text-align: center;
+}
+
+.presentation-card {
+    display: inline-block;
+    background: #0f0f0f;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: rgb(7, 7, 7);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-secondary {
+    background-color: #0f0;
+    color: rgb(14, 14, 14);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.external-link {
+    text-align: center;
+    margin: 20px;
+}
+
+.btn-link {
+    text-decoration: none;
+    color: #131313;
+    background-color: #0f0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-link:hover {
+    background-color: rgb(31, 115, 31);
+}
