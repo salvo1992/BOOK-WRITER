@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentBook = null;
 
+    if (noteInput) {
+        noteInput.style.width = "40%";  // Larghezza del 40% della pagina
+        noteInput.style.height = "5vh"; // Altezza del 15% della viewport
+        noteInput.style.resize = "none"; // Impedisce il ridimensionamento manuale
+        noteInput.style.padding = "10px"; // Aggiunge spazio interno per migliorare la leggibilità
+    }
+
     // Recupera i dettagli del libro
     async function fetchBook() {
         try {

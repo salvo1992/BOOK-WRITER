@@ -1,21 +1,24 @@
-/* Stile Generale */
+/* Imposta il layout principale */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #101e0f;
     color: #0f0;
-    overflow-y: auto;
+    overflow: hidden; /* Impedisce lo scroll sul body */
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Altezza dell'intera finestra */
 }
 
+/* Header (Navbar) */
 header {
     background-color: #04843b;
     color: rgb(9, 9, 9);
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #0f0;
+    flex-shrink: 0; /* Evita che cambi altezza */
 }
 
 header h1 {
@@ -27,25 +30,24 @@ header p {
     font-size: 1.2em;
 }
 
+/* Contenuto Scrollabile */
 main {
-     padding: 50px;
+    flex: 1; /* Riempie lo spazio tra header e footer */
+    overflow-y: auto; /* Abilita lo scroll verticale */
+    padding: 50px;
 }
 
+/* Footer */
 footer {
     background-color: #000;
     color: #0f0;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
     border-top: 1px solid #0f0;
+    position: relative;
+    flex-shrink: 0; /* Evita che cambi altezza */
+    z-index: 1000;
 }
-
-footer p {
-    margin: 0;
-}
-
 /* Navbar */
 .navbar {
     display: flex;
@@ -111,7 +113,8 @@ form button:hover {
     width: 80%;
     margin: 20px auto;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
 }
 
 #book-list-container {
