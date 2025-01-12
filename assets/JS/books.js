@@ -1,9 +1,9 @@
-// books.js - Gestione dei Libri tramite API
-
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = 'https://book-writer.onrender.com'; // URL del backend
+    const API_BASE_URL = ' http://localhost:5500'; // URL del backend
     const bookList = document.getElementById("book-list");
     const createBookButton = document.getElementById("create-book");
+    const previewButton = document.getElementById("preview-book");
+    const previewContainer = document.getElementById("preview-container");
 
     if (!bookList) {
         console.warn("Elemento book-list non trovato nel DOM. La pagina potrebbe non funzionare correttamente.");
@@ -71,20 +71,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Pulsante per accedere al Grimorio
-            const grimorioButton = document.createElement("button");
-            grimorioButton.textContent = "Grimorio";
-            grimorioButton.classList.add("btn-secondary");
-            grimorioButton.addEventListener("click", () => {
-                console.log(`Apertura Grimorio per il libro con ID: ${book._id}`);
+            // Pulsante per visualizzare l'anteprima
+            const previewButton = document.createElement("button");
+            previewButton.textContent = "Anteprima";
+            previewButton.classList.add("btn-secondary");
+            previewButton.addEventListener("click", () => {
                 localStorage.setItem("currentBookId", book._id);
-                window.location.href = "grimorio.html";
+                window.location.href = "download.html";
             });
 
             li.appendChild(selectButton);
             li.appendChild(downloadButton);
             li.appendChild(deleteButton);
-            li.appendChild(grimorioButton);
+            li.appendChild(previewButton);
             bookList.appendChild(li);
         });
     }

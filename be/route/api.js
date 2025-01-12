@@ -162,44 +162,104 @@ router.delete('/books/:id', async (req, res) => {
 // Endpoint per la rilegatura del libro
 router.get('/books/:id/full', async (req, res) => {
     try {
+        console.log("Il router è stato raggiunto correttamente.");
+        console.log(`Inizio generazione del libro con ID: ${req.params.id}`);
+
         const book = await Book.findById(req.params.id);
         if (!book) {
             return res.status(404).json({ error: 'Libro non trovato.' });
         }
 
-        const bookContent = `
-            <html>
-            <head>
-                <title>${book.title}</title>
-            </head>
-            <body>
-                <h1>${book.title}</h1>
-                <h2>Introduzione</h2>
-                <p>${book.introduction || 'Nessuna introduzione'}</p>
-                <h2>Capitoli</h2>
-                ${book.chapters.map((chapter, index) => `<h3>Capitolo ${index + 1}: ${chapter}</h3><p>${book.content[index] || ''}</p>`).join('')}
-                <h2>Conclusione</h2>
-                <p>${book.conclusion || 'Nessuna conclusione'}</p>
-                <h2>Note</h2>
-                <ul>
-                    ${book.notes.map(note => `<li>${note}</li>`).join('')}
-                </ul>
-                <h2>Grimorio</h2>
-                ${Object.entries(book.grimorio || {}).map(([category, elements]) => `
-                    <h3>${category}</h3>
-                    <ul>${elements.map(element => `<li>${element.title || 'Senza titolo'} - ${element.description || ''}</li>`).join('')}</ul>
-                `).join('')}
-            </body>
-            </html>
-        `;
+        console.log("Dati libro recuperati:", book);
 
+        // Converti il grimorio in un oggetto semplice
+        const grimorio = {};
+        if (book.grimorio) {
+            book.grimorio.forEach((value, key) => {
+                grimorio[key] = value;
+            });
+        }
+
+        // Genera l'HTML per il libro
+        const generateHTML = (book, grimorio) => {
+            try {
+                return `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>${book.title}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .page { page-break-after: always; }
+                            .cover { text-align: center; background-color: #f4f4f4; padding: 50px; }
+                            .chapter { margin-bottom: 20px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="cover">
+                            <h1>${book.title}</h1>
+                            <p>${book.introduction || 'Nessuna introduzione disponibile.'}</p>
+                        </div>
+                        <div class="page">
+                            <h2>Indice</h2>
+                            <ul>
+                                ${book.chapters.map((chapter, index) => `<li>Capitolo ${index + 1}: ${chapter.title}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ${book.chapters.map((chapter, index) => `
+                            <div class="page chapter">
+                                <h2>Capitolo ${index + 1}: ${chapter.title}</h2>
+                                <p>${chapter.content || 'Nessun contenuto'}</p>
+                                ${chapter.subchapters.map((sub, subIndex) => `
+                                    <h3>Sottocapitolo ${index + 1}.${subIndex + 1}: ${sub.title}</h3>
+                                    <p>${sub.content || 'Nessun contenuto'}</p>
+                                `).join('')}
+                            </div>
+                        `).join('')}
+                        <div class="page">
+                            <h2>Note</h2>
+                            <ul>
+                                ${book.notes.map(note => `<li>${note}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="page">
+                            <h2>Grimorio</h2>
+                            ${Object.keys(grimorio).map(category => `
+                                <h3>${category}</h3>
+                                ${(Array.isArray(grimorio[category]) ? grimorio[category] : [])
+                                    .map(item => `
+                                        <div>
+                                            <h4>${item.title}</h4>
+                                            <p>${item.description || 'Nessuna descrizione'}</p>
+                                            ${item.image ? `<img src="${item.image}" alt="${item.title}" style="max-width: 100%;">` : ''}
+                                        </div>
+                                    `).join('')}
+                            `).join('')}
+                        </div>
+                    </body>
+                    </html>
+                `;
+            } catch (templateError) {
+                console.error('Errore durante la generazione del contenuto HTML:', templateError.message);
+                throw new Error('Errore nella generazione del contenuto HTML.');
+            }
+        };
+
+        const htmlContent = generateHTML(book, grimorio);
         res.setHeader('Content-Disposition', 'attachment; filename="book.html"');
         res.setHeader('Content-Type', 'text/html');
-        res.send(bookContent);
+        res.send(htmlContent);
     } catch (error) {
+        console.error('Errore nella generazione del libro completo:', error.message);
         res.status(500).json({ error: 'Errore nella generazione del libro completo.' });
     }
 });
+
+
+
+
 
 module.exports = router;
 

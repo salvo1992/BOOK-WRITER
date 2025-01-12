@@ -1,0 +1,130 @@
+/* Stile per la pagina di download */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+/* Contenitore principale */
+#preview-container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 900px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Copertina del libro */
+.book-cover {
+    text-align: center;
+    background-color: #4a90e2; /* Colore predefinito, sovrascritto dinamicamente */
+    color: white;
+    padding: 50px 20px;
+    border-bottom: 5px solid #333;
+}
+
+.book-cover h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.book-cover p {
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+/* Pagine del libro */
+.book-page {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    page-break-after: always;
+}
+
+.book-page h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.book-page p,
+.book-page ul {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+.book-page ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+/* Grimorio */
+.grimorio-item {
+    margin-bottom: 15px;
+}
+
+.grimorio-item h3 {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.grimorio-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Pulsanti */
+button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    #preview-container {
+        width: 90%;
+    }
+
+    .book-cover h1 {
+        font-size: 1.5rem;
+    }
+
+    .book-cover p {
+        font-size: 1rem;
+    }
+
+    .book-page h2 {
+        font-size: 1.2rem;
+    }
+
+    .book-page p,
+    .book-page ul {
+        font-size: 0.9rem;
+    }
+}

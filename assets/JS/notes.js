@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentBookTitle = document.getElementById('current-book-title');
     const currentBookId = localStorage.getItem("currentBookId");
 
+    
+
     if (!currentBookId) {
         console.warn("Nessun libro selezionato. Ritorno alla pagina iniziale.");
         window.location.href = "books.html";

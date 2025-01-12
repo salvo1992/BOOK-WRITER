@@ -31,10 +31,12 @@
     justify-content: center;
     gap: 10px;
     margin: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .btn-primary {
-    background-color: #4CAF50;
+    background-color: #0f0;
     color: rgb(7, 7, 7);
     padding: 10px 20px;
     border: none;
@@ -64,7 +66,7 @@
     background-color: #0f0;
     padding: 10px 20px;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .btn-link:hover {

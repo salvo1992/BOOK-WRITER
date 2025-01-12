@@ -6,6 +6,8 @@ body {
     background-color: #101e0f;
     color: #0f0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -26,7 +28,7 @@ header p {
 }
 
 main {
-    /* padding: 20px; */
+     padding: 50px;
 }
 
 footer {
@@ -50,7 +52,7 @@ footer p {
     justify-content: space-around;
     align-items: center;
     background-color: #000;
-    padding: 10px 0;
+    
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -108,6 +110,8 @@ form button:hover {
 .book-container {
     width: 80%;
     margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #book-list-container {
@@ -119,7 +123,7 @@ form button:hover {
 #book-list-container li {
     background-color: #000;
     color: #0f0;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     padding: 15px;
     border: 1px solid #0f0;
     border-radius: 8px;
@@ -147,17 +151,19 @@ form button:hover {
 }
 
 .btn-primary {
-    background-color: #007BFF;
-    color: white;
+    background-color: #0f0;
+    color: rgb(19, 18, 18);
+    margin: 5px;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: rgb(33, 94, 33);
 }
 
 .btn-secondary {
     background-color: #6c757d;
     color: white;
+    margin: 5px;
 }
 
 .btn-secondary:hover {
@@ -167,6 +173,7 @@ form button:hover {
 .btn-danger {
     background-color: #dc3545;
     color: white;
+    margin: 5px;
 }
 
 .btn-danger:hover {
@@ -177,6 +184,8 @@ form button:hover {
 .create-book-section {
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .create-book-section button {
@@ -231,18 +240,18 @@ form button:hover {
 
 .sidebar-link:hover,
 .sidebar-link.active {
-    background-color: #575757;
+    background-color: #0f0;
     color: #fff;
 }
 
 /* Pulsante di toggle */
 .sidebar-toggle {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 125px;
+    left: 350px;
     z-index: 1100;
-    background-color: #333;
-    color: #fff;
+    background-color: #0f0;
+    color: #141414;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -274,7 +283,7 @@ form button:hover {
 /* Responsive behavior */
 @media (max-width: 768px) {
     .sidebar {
-        left: -250px;
+        left: -280px;
     }
 
     .sidebar.open {
@@ -291,4 +300,14 @@ form button:hover {
     resize: vertical; /* Permette il ridimensionamento verticale manuale */
     padding: 10px; /* Aggiunge un po' di spazio interno per migliorare la leggibilità */
     font-size: 1rem; /* Dimensione del testo leggibile */
+}
+
+.note-content{
+    height: 40vh;
+    resize: vertical;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #0f0; 
+    border-radius: 8px;
+    width: 60%;
 }
