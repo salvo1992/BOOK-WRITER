@@ -8,11 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("https://book-writer.onrender.com/chatbot", {
                 method: "POST",
+                authorizer: {
+                    "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, // Legge la chiave dal file .env
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ prompt }),
-            });
+        }});
 
             const data = await response.json();
 
